@@ -9,7 +9,11 @@
 
 ## Recomendaciones para el algoritmo:
 N = 50 Número de cromosomas de las poblaciones.
+
 M = 200 Cantidad de ciclos.
+
 Cromosomas: permutaciones de 23 números naturales del 1 al 23 donde cada gen es una ciudad.
+
 Las frecuencias de crossover y de mutación quedan a criterio del grupo.
+
 Se deberá usar crossover cíclico.
