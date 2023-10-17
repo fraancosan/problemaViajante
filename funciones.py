@@ -1,5 +1,52 @@
 import random
 
+############################### Heuristica ###############################
+
+# Devuelve el destino no visitado mas cercano de una lista de destinos. De encontrarse
+# todos los destinos visitados, devuelve el origen y la distancia desde la ciudad en la 
+# que se encuentra
+def getCiudadMasCercana(destinos: dict, visitadas: list[str], origen: str) -> dict:
+  distanciaMinima: int | None = None
+  ciudadMasCercana: str | None = None
+
+  # Se recorren los destinos posibles
+  for ciudad in destinos:
+    # Si la ciudad ya fue visitada se continua con la siguiente 
+    if ciudad in visitadas:
+        continue
+
+    # Se obtiene la distancia a la que se encuentra la ciudad
+    distancia = int(destinos[ciudad])
+
+    # Si aun no hay una distancia minima se asigna una 
+    if distanciaMinima is None:
+        distanciaMinima = distancia
+        ciudadMasCercana = ciudad
+        continue
+
+    # Si la distancia a la que se encuentra la ciudad es menor a la minima actual
+    # se asigna esta nueva distancia como nuevo minimo y a la ciudad como la ciudad mas cercana
+    if distancia < distanciaMinima:
+        distanciaMinima = distancia
+        ciudadMasCercana = ciudad
+
+  # Si al haber recorrido todos los destinos no se asigno ninguno, se considera que
+  # todos fueron visitados, por lo tanto, se devuelve la ciudad origen y la distancia
+  # a la que se encuentra de la ciudad actual
+  if ciudadMasCercana is None:
+    # Significa que todas las ciudades fueron visitadas
+    return {'ciudad': origen, 'distancia': int(destinos[origen])}
+  
+  return {'ciudad': ciudadMasCercana, 'distancia': distanciaMinima}
+
+def getNroVisitadas(visitadas, datosCiudades):
+  nroVisitadas = []
+  for i in visitadas:
+    nroVisitadas.append(datosCiudades[0].index(i))
+  return nroVisitadas
+
+############################### Algoritmos Geneticos ###############################
+
 def generarPoblacion(tamaño, datosCiudades):
   poblacion = []
   for i in range(tamaño):
@@ -94,15 +141,14 @@ class cromosoma():
   def inicializa(self):
     def genera(lista):
       # Genera un cromosoma aleatorio dentro de ese rango de numeros
-      # Dado que el enunciado da ese rango, se ignora la ciudad autonoma de BS AS
-      numero = random.randint(1,23)
+      numero = random.randint(0,23)
       # Si el numero ya esta en la lista, se genera otro
       while numero in lista:
-        numero = random.randint(1,23)
+        numero = random.randint(0,23)
       return numero
 
     lista = []
-    for i in range(23):
+    for i in range(24):
       lista.append(genera(lista))
     return lista
 
